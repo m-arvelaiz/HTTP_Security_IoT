@@ -1,0 +1,52 @@
+services:
+  node-red:
+    build:
+      context: ./iot-device
+    container_name: node_red
+    image: custom-node-red
+    ports:
+      - "1880:1880"  # Node-RED UI
+    
+    networks:
+      - iot_network
+    volumes:
+      - ./iot-device/data:/data  # Persist flows, settings, credentials, etc.
+    restart: unless-stopped
+    environment:
+      - HTTP_PROXY=http://mitmproxy:8080  # Use mitmproxy for HTTP requests
+      - HTTPS_PROXY=http://mitmproxy:8080  # Use mitmproxy for HTTPS requests
+      #- NODE_TLS_REJECT_UNAUTHORIZED=0  # Disable certificate validation
+
+  express-server:
+    build:
+      context: ./server-gateway
+    container_name: express_server
+    ports:
+      - "3443:3443"  # HTTPS port
+      - "3000:3000"  # Add this line to expose port 3000
+    
+    networks:
+      - iot_network
+    volumes:
+      - ./server-gateway/ssl:/usr/src/app/ssl  # Mount the ssl directory
+    restart: unless-stopped
+    environment:
+      - HTTP_PROXY=http://mitmproxy:8080  # Use mitmproxy for HTTP requests
+      - HTTPS_PROXY=http://mitmproxy:8080  # Use mitmproxy for HTTPS requests
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    container_name: mitmproxy
+    ports:
+      - "8080:8080"  # Proxy interface for HTTP traffic
+      - "8081:8081"  # Proxy interface for WebSocket traffic
+      - "8082:8082"  # Add this line for Web UI
+    networks:
+      - iot_network
+    volumes:
+    - ./mitmproxy/mitmproxy_script.py:/etc/mitmproxy/mitmproxy_script.py
+    command: mitmdump --mode regular -s /etc/mitmproxy/mitmproxy_script.py  -v
+    restart: unless-stopped
+
+networks:
+  iot_network:
+    external: true

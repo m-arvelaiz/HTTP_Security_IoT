@@ -1,0 +1,361 @@
+[
+    {
+        "id": "bfc1a5f4620c8aa4",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "349f4d2ed97a2235",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "116844d4af3af265",
+        "type": "tls-config",
+        "name": "",
+        "cert": "/data/ca.cert",
+        "key": "/data/server.key",
+        "ca": "/data/ca.cert",
+        "certname": "certificate.crt",
+        "keyname": "private.key",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "4a4363860278253d",
+        "type": "tls-config",
+        "name": "",
+        "cert": "/data/server.cert",
+        "key": "/data/server.key",
+        "ca": "/data/ca.cert",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "b178268794050749",
+        "type": "http proxy",
+        "name": "",
+        "url": "http://mitmproxy:8080",
+        "noproxy": []
+    },
+    {
+        "id": "59a9cbb46d33a340",
+        "type": "inject",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "Temp & Hum Sensor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "903fb576d5e53c72"
+            ]
+        ]
+    },
+    {
+        "id": "903fb576d5e53c72",
+        "type": "function",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "function 2",
+        "func": "msg.payload = {\n    temperature: Math.floor(Math.random() * 35) + 5,\n    humidity: Math.floor(Math.random() * 100)\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "86b057c4bf25cdce",
+                "deaf65c806617b2c"
+            ]
+        ]
+    },
+    {
+        "id": "86b057c4bf25cdce",
+        "type": "http request",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://express_server:3443/secure-data",
+        "tls": "4a4363860278253d",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 610,
+        "y": 500,
+        "wires": [
+            [
+                "33cb9df3abd141da"
+            ]
+        ]
+    },
+    {
+        "id": "33cb9df3abd141da",
+        "type": "debug",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "deaf65c806617b2c",
+        "type": "debug",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "28bc183e071fc93e",
+        "type": "inject",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "Temp & Hum Sensor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 240,
+        "wires": [
+            [
+                "90cf25135312d107"
+            ]
+        ]
+    },
+    {
+        "id": "90cf25135312d107",
+        "type": "function",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "function 3",
+        "func": "msg.payload = {\n    temperature: Math.floor(Math.random() * 35) + 5,\n    humidity: Math.floor(Math.random() * 100)\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "d52979d5b1160653",
+                "43375edd612ae751"
+            ]
+        ]
+    },
+    {
+        "id": "d52979d5b1160653",
+        "type": "http request",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://express_server:3000/data",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 610,
+        "y": 240,
+        "wires": [
+            [
+                "c199fd4661ce2143"
+            ]
+        ]
+    },
+    {
+        "id": "c199fd4661ce2143",
+        "type": "debug",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "43375edd612ae751",
+        "type": "debug",
+        "z": "bfc1a5f4620c8aa4",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a1b2c3d4",
+        "type": "http in",
+        "z": "349f4d2ed97a2235",
+        "name": "Intercept Request",
+        "url": "/intercept",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 280,
+        "wires": [
+            [
+                "b2c3d4e5"
+            ]
+        ]
+    },
+    {
+        "id": "b2c3d4e5",
+        "type": "function",
+        "z": "349f4d2ed97a2235",
+        "name": "Modify Request",
+        "func": "msg.payload = { modified: true }; return msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 280,
+        "wires": [
+            [
+                "c3d4e5f6"
+            ]
+        ]
+    },
+    {
+        "id": "c3d4e5f6",
+        "type": "http request",
+        "z": "349f4d2ed97a2235",
+        "name": "Forward to Server",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://target-server.com/api",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 550,
+        "y": 280,
+        "wires": [
+            [
+                "d4e5f6g7"
+            ]
+        ]
+    },
+    {
+        "id": "d4e5f6g7",
+        "type": "function",
+        "z": "349f4d2ed97a2235",
+        "name": "Modify Response",
+        "func": "msg.payload.modified = true; return msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 280,
+        "wires": [
+            [
+                "e5f6g7h8"
+            ]
+        ]
+    },
+    {
+        "id": "e5f6g7h8",
+        "type": "http response",
+        "z": "349f4d2ed97a2235",
+        "name": "Send Response",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 280,
+        "wires": []
+    }
+]
